@@ -19,7 +19,7 @@ public enum eWeaponType
     laser,      // [NI] Damage over time
     shield,     // Raise shieldLevel
 
-    bee,        // bees fly off in basically random directions
+    bee,        // does half damage but shoots 5 bullets very quickly
 }
 
 
@@ -150,6 +150,12 @@ public class Weapon : MonoBehaviour
                 p.vel = p.transform.rotation * vel;
                 p = MakeProjectile();
                 p.transform.rotation = Quaternion.AngleAxis(-90, Vector3.back);
+                p.vel = p.transform.rotation * vel;
+                p = MakeProjectile();
+                p.transform.rotation = Quaternion.AngleAxis(-45, Vector3.back);
+                p.vel = p.transform.rotation * vel;
+                p = MakeProjectile();
+                p.transform.rotation = Quaternion.AngleAxis(45, Vector3.back);
                 p.vel = p.transform.rotation * vel;
                 break;
 
