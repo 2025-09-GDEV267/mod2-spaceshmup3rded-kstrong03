@@ -17,7 +17,9 @@ public enum eWeaponType
     missile,    // [NI] Homing missiles
 
     laser,      // [NI] Damage over time
-    shield      // Raise shieldLevel
+    shield,      // Raise shieldLevel
+
+    doubleship,  // duplicates your ship
 }
 
 
@@ -139,6 +141,7 @@ public class Weapon : MonoBehaviour
                 p.transform.rotation = Quaternion.AngleAxis(-10, Vector3.back);
                 p.vel = p.transform.rotation * vel;
                 break;
+                
 
         }
     }
