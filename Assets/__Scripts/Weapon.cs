@@ -17,9 +17,9 @@ public enum eWeaponType
     missile,    // [NI] Homing missiles
 
     laser,      // [NI] Damage over time
-    shield,      // Raise shieldLevel
+    shield,     // Raise shieldLevel
 
-    doubleship,  // duplicates your ship
+    bee,        // bees fly off in basically random directions
 }
 
 
@@ -141,7 +141,18 @@ public class Weapon : MonoBehaviour
                 p.transform.rotation = Quaternion.AngleAxis(-10, Vector3.back);
                 p.vel = p.transform.rotation * vel;
                 break;
-                
+
+            case eWeaponType.bee:                                         // l
+                p = MakeProjectile();
+                p.vel = vel;
+                p = MakeProjectile();
+                p.transform.rotation = Quaternion.AngleAxis(90, Vector3.back);
+                p.vel = p.transform.rotation * vel;
+                p = MakeProjectile();
+                p.transform.rotation = Quaternion.AngleAxis(-90, Vector3.back);
+                p.vel = p.transform.rotation * vel;
+                break;
+
 
         }
     }
