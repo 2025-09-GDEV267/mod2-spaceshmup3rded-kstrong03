@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
 
 
 /// <summary
@@ -67,20 +66,6 @@ public class Weapon : MonoBehaviour
     private GameObject weaponModel;
     private Transform shotPointTrans;
 
-    // shoving variables from Enemy_1 to here for phaser
-    public float waveFrequency = 2;
-    public float waveWidth = 4;
-    public float waveRotY = 45;
-
-    private float x0; // The initial x value of pos
-    private float birthTime;
-
-    public Vector3 pos
-    {
-        get { return transform.position; }
-        set { transform.position = value; }
-    }
-
     void Start()
     {
         // Set up PROJECTILE_ANCHOR if it has not already been done
@@ -91,10 +76,6 @@ public class Weapon : MonoBehaviour
         }
 
         shotPointTrans = transform.GetChild(0);                              // c
-
-        x0 = pos.x;
-
-        birthTime = Time.time;
 
         // Call SetType() for the default _type set in the Inspector
         SetType(_type);                                                      // d
@@ -142,14 +123,6 @@ public class Weapon : MonoBehaviour
 
         ProjectileHero p;
         Vector3 vel = Vector3.up * def.velocity;
-        
-        
-        Vector3 tempPos = shotPointTrans.position;
-        float age = Time.time - birthTime;
-        float theta = Mathf.PI * 2 * age / waveFrequency;
-        float sin = Mathf.Sin(theta);
-        tempPos.x = x0 + waveWidth * sin;
-
 
         switch (type)
         {                                                      // k
@@ -186,18 +159,6 @@ public class Weapon : MonoBehaviour
                 p.vel = p.transform.rotation * vel;
                 break;
 
-            
-            // projectile follows ship's y but not x for some reason
-            case eWeaponType.phaser:
-                p = MakeProjectile();
-                p.transform.rotation = Quaternion.AngleAxis(0, Vector3.back);
-                p.vel = vel;
-                p.vel = p.transform.rotation * vel;
-                p.transform.position = tempPos;
-                p.transform.position = new Vector3(tempPos.x, p.transform.position.y, p.transform.position.z);
-                break;
-
-
 
         }
     }
@@ -215,8 +176,6 @@ public class Weapon : MonoBehaviour
         p.type = type;
         nextShotTime = Time.time + def.delayBetweenShots;                    // p
         return (p);
-
-
     }
 }
 
