@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 
 /// <summary
@@ -66,6 +67,20 @@ public class Weapon : MonoBehaviour
     private GameObject weaponModel;
     private Transform shotPointTrans;
 
+    // shoving variables from Enemy_1 to here for phaser
+    public float waveFrequency = 2;
+    public float waveWidth = 4;
+    public float waveRotY = 45;
+
+    private float x0; // The initial x value of pos
+    private float birthTime;
+
+    public Vector3 pos
+    {
+        get { return transform.position; }
+        set { transform.position = value; }
+    }
+
     void Start()
     {
         // Set up PROJECTILE_ANCHOR if it has not already been done
@@ -73,6 +88,7 @@ public class Weapon : MonoBehaviour
         {                                       // b
             GameObject go = new GameObject("_ProjectileAnchor");
             PROJECTILE_ANCHOR = go.transform;
+
         }
 
         shotPointTrans = transform.GetChild(0);                              // c
@@ -123,6 +139,13 @@ public class Weapon : MonoBehaviour
 
         ProjectileHero p;
         Vector3 vel = Vector3.up * def.velocity;
+        
+        
+        Vector3 tempPos = pos;
+        float age = Time.time - birthTime;
+        float theta = Mathf.PI * 2 * age / waveFrequency;
+        float sin = Mathf.Sin(theta);
+        tempPos.x = x0 + waveWidth * sin;
 
         switch (type)
         {                                                      // k
@@ -159,6 +182,14 @@ public class Weapon : MonoBehaviour
                 p.vel = p.transform.rotation * vel;
                 break;
 
+            case eWeaponType.phaser:
+                p = MakeProjectile();
+                p.transform.rotation = Quaternion.AngleAxis(0, Vector3.back);
+                p.vel = vel;
+                p.transform.position = tempPos;
+                break;
+
+
 
         }
     }
@@ -176,6 +207,8 @@ public class Weapon : MonoBehaviour
         p.type = type;
         nextShotTime = Time.time + def.delayBetweenShots;                    // p
         return (p);
+
+
     }
 }
 
