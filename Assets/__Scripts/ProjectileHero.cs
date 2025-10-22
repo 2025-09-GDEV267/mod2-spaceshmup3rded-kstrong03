@@ -13,6 +13,11 @@ public class ProjectileHero : MonoBehaviour
     [SerializeField]                                                         // a
     private eWeaponType _type;
 
+    public float x0; // Initial X position to use as the wave centerline
+    public float birthTime;
+    public float waveFrequency;
+    public float waveWidth;
+
 
     // This public property masks the private field _type
     public eWeaponType type
@@ -31,6 +36,30 @@ public class ProjectileHero : MonoBehaviour
 
     void Update()
     {
+
+        if (type == eWeaponType.phaser)
+        {
+            // Apply wave movement logic, identical to what you had in Weapon.Fire()
+            float age = Time.time - birthTime;
+            float theta = Mathf.PI * 2 * age / waveFrequency;
+            float sin = Mathf.Sin(theta);
+
+            // Calculate the new X position
+            float x = x0 + waveWidth * sin;
+
+            // Update position (move it forward and apply the new X)
+            Vector3 tempPos = transform.position;
+            tempPos += vel * Time.deltaTime; // Move forward (up in Y)
+            tempPos.x = x; // Apply the wave's lateral position
+
+            transform.position = tempPos;
+        }
+        else
+        {
+            // Standard straight movement for other weapons
+            transform.position += vel * Time.deltaTime;
+        }
+
         if (bndCheck.LocIs(BoundsCheck.eScreenLocs.offUp))
         {
             Destroy(gameObject);

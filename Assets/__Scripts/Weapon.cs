@@ -66,6 +66,11 @@ public class Weapon : MonoBehaviour
     private GameObject weaponModel;
     private Transform shotPointTrans;
 
+    // shoving in variables from enemy_1 to make the sine wave
+    public float waveFrequency = 2;
+    public float waveWidth = 4;
+    public float waveRotY = 45;
+
     void Start()
     {
         // Set up PROJECTILE_ANCHOR if it has not already been done
@@ -157,6 +162,15 @@ public class Weapon : MonoBehaviour
                 p = MakeProjectile();
                 p.transform.rotation = Quaternion.AngleAxis(45, Vector3.back);
                 p.vel = p.transform.rotation * vel;
+                break;
+
+            case eWeaponType.phaser:
+                p = MakeProjectile();
+                p.vel = vel;
+                p.x0 = shotPointTrans.position.x;
+                p.birthTime = Time.time;
+                p.waveFrequency = waveFrequency;
+                p.waveWidth = waveWidth;
                 break;
 
 
