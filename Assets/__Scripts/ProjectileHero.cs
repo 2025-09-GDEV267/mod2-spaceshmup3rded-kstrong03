@@ -39,25 +39,31 @@ public class ProjectileHero : MonoBehaviour
 
         if (type == eWeaponType.phaser)
         {
-            // Apply wave movement logic, identical to what you had in Weapon.Fire()
-            float age = Time.time - birthTime;
-            float theta = Mathf.PI * 2 * age / waveFrequency;
-            float sin = Mathf.Sin(theta);
+            // Calculate time elapsed since firing
+            float age = Time.time - birthTime;
 
-            // Calculate the new X position
-            float x = x0 + waveWidth * sin;
+            // Calculate the argument for the Sine function (theta)
+            // Multiplying by 2*PI converts cycles/second (frequency) to radians/second
+            float theta = age * waveFrequency * Mathf.PI * 2;
 
-            // Update position (move it forward and apply the new X)
-            Vector3 tempPos = transform.position;
-            tempPos += vel * Time.deltaTime; // Move forward (up in Y)
-            tempPos.x = x; // Apply the wave's lateral position
+            // Calculate the final absolute X position of the projectile
+            float x = x0 + waveWidth * Mathf.Sin(theta);
+
+            // Update position:
+            Vector3 tempPos = transform.position;
+
+            // 1. Apply vertical movement (Y component)
+            tempPos += vel * Time.deltaTime;
+
+            // 2. Apply the calculated wave's lateral position (overwrites X component)
+            tempPos.x = x;
 
             transform.position = tempPos;
         }
         else
         {
-            // Standard straight movement for other weapons
-            transform.position += vel * Time.deltaTime;
+            // Standard straight movement for other weapons
+            transform.position += vel * Time.deltaTime;
         }
 
         if (bndCheck.LocIs(BoundsCheck.eScreenLocs.offUp))
