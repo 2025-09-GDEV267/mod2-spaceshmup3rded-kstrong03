@@ -67,8 +67,8 @@ public class Weapon : MonoBehaviour
     private Transform shotPointTrans;
 
     // shoving in variables from enemy_1 to make the sine wave
-    public float waveFrequency = 2;
-    public float waveWidth = 4;
+    public float waveFrequency = 1f;
+    public float waveWidth = 7f;
     public float waveRotY = 45;
 
     void Start()
